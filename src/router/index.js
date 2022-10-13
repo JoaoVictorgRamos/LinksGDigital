@@ -1,6 +1,6 @@
 import Vue from "vue";
 import VueRouter from "vue-router";
-import ContatoView from "@/views/ContatoView";
+import ModalLinks from "@/components/ModalLinks";
 
 Vue.use(VueRouter);
 
@@ -10,9 +10,9 @@ const routes = [
     name: "home",
   },
   {
-    path: "/contato",
-    name: "ContatoView",
-    component: ContatoView,
+    path: "/modal",
+    name: "ModalLinks",
+    component: ModalLinks,
   },
 ];
 
