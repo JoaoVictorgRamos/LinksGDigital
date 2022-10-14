@@ -12,9 +12,8 @@ export default {
 };
 </script>
 
-<style>
+<style scoped>
 h1 {
-  font-family: "Montserrat";
   font-style: normal;
   font-weight: 600;
   font-size: 2.5rem;

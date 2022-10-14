@@ -19,7 +19,7 @@ export default {
   },
   data() {
     return {
-      modal: false,
+      modal: true,
     };
   },
   methods: {},
@@ -33,5 +33,6 @@ export default {
   text-decoration: none;
   list-style: none;
   box-sizing: border-box;
+  font-family: "Montserrat";
 }
 </style>
