@@ -1,30 +1,19 @@
 <template>
   <section class="modal">
     <div class="conteudo-modal">
-      <svg
-        class="fechar-modal"
-        width="50px"
-        height="50px"
-        viewBox="0 0 18 18"
-        fill="none"
-        xmlns="http://www.w3.org/2000/svg"
-      >
-        <path
-          d="M16.7844 1.30859L1.78442 16.3086M1.78442 1.30859L16.7844 16.3086"
-          stroke="#B5B9C5"
-          stroke-width="2"
-          stroke-linecap="round"
-          stroke-linejoin="round"
-        />
-      </svg>
-
+      <img src="@/assets/fechar-dark.svg" alt="fechar" class="fechar-modal" />
       <div class="flex-cotainer">
         <div>
           <h1 class="h1">Links de Redirecionamento 🌐</h1>
           <p class="p">Crie seus links de redirect em poucos passos</p>
         </div>
         <div>
-          <button class="button">Criar um Link</button>
+          <button
+            class="button"
+            @click="abrirSegundoModal = !abrirSegundoModal"
+          >
+            Criar um Link
+          </button>
         </div>
       </div>
       <div class="container-links">
@@ -127,13 +116,20 @@
         </div>
       </div>
     </div>
+    <CriacaoLinkModal v-if="abrirSegundoModal">segundo modal</CriacaoLinkModal>
   </section>
 </template>
 
 <script>
+import CriacaoLinkModal from "@/components/CriacaoLinkModal";
 export default {
   name: "ModalLinks",
-  data() {},
+  components: { CriacaoLinkModal },
+  data() {
+    return {
+      abrirSegundoModal: false,
+    };
+  },
   methods: {},
 };
 </script>
@@ -145,7 +141,7 @@ export default {
   top: 15px;
   color: #b5b9c5;
   cursor: pointer;
-  padding: 20px;
+  padding: 10px;
 }
 .modal {
   display: flex;
