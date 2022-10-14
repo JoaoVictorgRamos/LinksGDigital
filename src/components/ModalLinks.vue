@@ -116,7 +116,7 @@
         </div>
       </div>
     </div>
-    <CriacaoLinkModal v-if="abrirSegundoModal">segundo modal</CriacaoLinkModal>
+    <CriacaoLinkModal v-if="abrirSegundoModal"></CriacaoLinkModal>
   </section>
 </template>
 
@@ -194,7 +194,7 @@ export default {
 
 .container-links {
   display: grid;
-  grid-template-columns: 1fr 1fr;
+  grid-template-columns: 1fr calc(8rem) 1fr;
 }
 
 .container-link {

@@ -5,7 +5,12 @@
         <div class="background-titulo">
           <div class="menus">
             <h1 class="text-h1">Criação de Link</h1>
-            <img class="fechar" src="@/assets/fechar.svg" alt="fechar" />
+            <img
+              class="fechar"
+              @click="fecharSegundoModal"
+              src="@/assets/fechar.svg"
+              alt="fechar"
+            />
           </div>
         </div>
         <div class="background">
@@ -41,7 +46,9 @@
             </p>
             <p class="default-inserir">Insira a URL Default</p>
           </div>
-          <button class="botao-salvar">Salvar Link 💪</button>
+          <div class="flex-2">
+            <button class="botao-salvar">Salvar Link 💪</button>
+          </div>
         </div>
       </div>
     </div>
@@ -51,6 +58,11 @@
 <script>
 export default {
   name: "CriacaoLinkModal",
+  methods: {
+    fecharSegundoModal() {
+      this.abrirSegundoModal = false;
+    },
+  },
 };
 </script>
 
@@ -175,5 +187,12 @@ export default {
   font-weight: 600;
   font-size: 14px;
   color: #ffffff;
+  cursor: pointer;
+}
+
+.flex-2 {
+  display: flex;
+  flex: 1;
+  justify-content: end;
 }
 </style>
