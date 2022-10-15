@@ -1,6 +1,6 @@
 import Vue from "vue";
 import VueRouter from "vue-router";
-import ModalLinks from "@/components/ModalLinks";
+import LinksCriados from "@/views/LinksCriados";
 
 Vue.use(VueRouter);
 
@@ -10,9 +10,9 @@ const routes = [
     name: "home",
   },
   {
-    path: "/modal",
-    name: "ModalLinks",
-    component: ModalLinks,
+    path: "/links",
+    name: "LinksCriados",
+    component: LinksCriados,
   },
 ];
 
