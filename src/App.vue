@@ -41,54 +41,29 @@
         <div class="container-links">
           <div class="lado-esquerdo">
             <div class="container-link">
-              <h1 class="quantidade-links">04 links</h1>
+              <h1 class="quantidade-links">{{ LinksCriados.length }} links</h1>
               <p class="tempo">Clique em tempo real</p>
             </div>
-            <div class="container-link">
-              <div class="flex-1">
-                <div class="link">
-                  <h1 class="link-nome">Link legal</h1>
-                  <p class="link-data">04/01/2020</p>
-                </div>
-                <div class="detalhes-link">
-                  <p class="link-redirect">redirect.gdigi.al/3hNU8HO</p>
-                  <p class="link-cliques">👉 02/750</p>
-                </div>
-              </div>
-            </div>
-            <div class="container-link">
-              <div class="flex-1">
-                <div class="link">
-                  <h1 class="link-nome">Melhor legal</h1>
-                  <p class="link-data">03/01/2020</p>
-                </div>
-                <div class="detalhes-link">
-                  <p class="link-redirect">redirect.gdigi.al/3hNU8HO</p>
-                  <p class="link-cliques">👉 30/750</p>
-                </div>
-              </div>
-            </div>
-            <div class="container-link">
-              <div class="flex-1">
-                <div class="link">
-                  <h1 class="link-nome">Aquele link</h1>
-                  <p class="link-data">2/08/2020</p>
-                </div>
-                <div class="detalhes-link">
-                  <p class="link-redirect">redirect.gdigi.al/3hNU8HO</p>
-                  <p class="link-cliques">👉 45/750</p>
-                </div>
-              </div>
-            </div>
-            <div class="container-link">
-              <div class="flex-1">
-                <div class="link">
-                  <h1 class="link-nome">Link Outro</h1>
-                  <p class="link-data">01/01/2020</p>
-                </div>
-                <div class="detalhes-link">
-                  <p class="link-redirect">redirect.gdigi.al/3hNU8HO</p>
-                  <p class="link-cliques">👉 15/750</p>
+            <div>
+              <div
+                v-for="(criar, index) in LinksCriados"
+                :key="index"
+                @click="selectItem(criar)"
+                style="cursor: pointer"
+              >
+                <div class="container-lado-esquerdo">
+                  <div class="lado-esquerdo-titulo-data">
+                    <p class="lado-esquerdo-titulo-p">{{ criar.titulo }}</p>
+                    <p class="lado-esquerdo-titulo-date">{{ criar.data }}</p>
+                  </div>
+                  <div class="lado-esquerdo-url-cliques">
+                    <p class="lado-esquerdo-titulo-url">
+                      {{ criar.urlOriginal }}
+                    </p>
+                    <p class="lado-esquerdo-titulo-clqiues">
+                      👉 {{ criar.cliques }}/{{ criar.totalcliques }}
+                    </p>
+                  </div>
                 </div>
               </div>
             </div>
@@ -96,50 +71,60 @@
           <div class="lado-direito">
             <div class="container-link-escolhido">
               <div class="link-escolhido-container">
-                <h1 class="link-escolhido">Link Legal</h1>
-                <p class="link-escolhido-data">Criado em 04/01/2020 ás 10:36</p>
+                <h1 class="link-escolhido">{{ selectedItem.titulo }}</h1>
+                <p class="link-escolhido-data">{{ selectedItem.data }}</p>
               </div>
               <div class="link-escolhido-detalhes">
-                <p class="link-redirect-detalhes">redirect.gdigi.al/3hNU8HO</p>
-                <button class="botao">Copiar</button>
-                <button class="botao">Editar</button>
+                <p
+                  class="link-redirect-detalhes"
+                  id="copy"
+                  v-if="!inputEditUrlOriginal"
+                >
+                  http://localhost:8080/{{ selectedItem.urlOriginal }}
+                </p>
+                <input
+                  v-else
+                  class="geracao-de-links-titulo-input"
+                  type="text"
+                  v-model="selectedItem.urlOriginal"
+                  placeholder="Digite o Link"
+                />
+                <button
+                  class="botao"
+                  v-if="!inputEditUrlOriginal"
+                  @click="copiarTexto()"
+                >
+                  Copiar
+                </button>
+                <button
+                  class="botao"
+                  v-if="!inputEditUrlOriginal"
+                  @click="editUrlOriginal(selectedItem)"
+                >
+                  Editar
+                </button>
+                <button
+                  class="botao"
+                  v-else
+                  @click="saveEditUrlOriginal(selectedItem)"
+                >
+                  Salvar Editar
+                </button>
               </div>
             </div>
-            <div class="links-geradoss">
-              <div class="valor-container">
-                <div class="valor-flex-container">
-                  <h1 class="valor">01</h1>
-                  <h1 class="link-gerado">
-                    https://www.notion.so/Green-club-8d477635100044e4b3c5ca81c479fbdc
-                  </h1>
+            <div v-for="(item, index) in selectedItem.url" :key="index">
+              <div class="links-geradoss">
+                <div class="valor-container">
+                  <div class="valor-flex-container">
+                    <h1 class="valor">{{ index + 1 }}</h1>
+                    <h1 class="link-gerado">
+                      {{ item.urlTitulo }}
+                    </h1>
+                  </div>
+                  <button class="botao">Editar</button>
                 </div>
-                <button class="botao">Editar</button>
+                <p class="data-gerada">02/250</p>
               </div>
-              <p class="data-gerada">02/250</p>
-            </div>
-            <div class="links-geradoss">
-              <div class="valor-container">
-                <div class="valor-flex-container">
-                  <h1 class="valor">01</h1>
-                  <h1 class="link-gerado">
-                    https://www.notion.so/Green-club-8d477635100044e4b3c5ca81c479fbdc
-                  </h1>
-                </div>
-                <button class="botao">Editar</button>
-              </div>
-              <p class="data-gerada">02/250</p>
-            </div>
-            <div class="links-geradoss">
-              <div class="valor-container">
-                <div class="valor-flex-container">
-                  <h1 class="valor">01</h1>
-                  <h1 class="link-gerado">
-                    https://www.notion.so/Green-club-8d477635100044e4b3c5ca81c479fbdc
-                  </h1>
-                </div>
-                <button class="botao">Editar</button>
-              </div>
-              <p class="data-gerada">02/250</p>
             </div>
           </div>
         </div>
@@ -158,45 +143,69 @@
                 />
               </div>
             </div>
-            <div class="background">
-              <div class="titulo-container">
-                <h1 class="titulo">Título do Link</h1>
+            <div class="container-geracao-de-links">
+              <div class="container-geracao-de-links-titulo">
+                <h1 class="geracao-de-links-titulo-h1">Titulo do Link</h1>
                 <input
-                  class="titulo-link"
+                  class="geracao-de-links-titulo-input"
                   type="text"
-                  placeholder="Link Legal"
+                  v-model="CriarLink.titulo"
+                  placeholder="Digite o titulo do Link"
                 />
               </div>
-              <div class="url-container">
-                <h1 class="url-titulo">URL original</h1>
-                <p class="url-descricao">
-                  Você poderá inserir uma ou várias URL's, faça como desejar.
+              <div class="container-geracao-de-links-URL">
+                <h2 class="geracao-de-links-titulo-h2">URL original</h2>
+                <p class="geracao-de-links-titulo-p">
+                  Você poderá inserir uma ou várias URL’s, faça como desejar.
                   Lembre-se de inserir a quantidade de cliques junto à URL.
                 </p>
               </div>
-              <div class="url-gerada-container">
-                <div class="url-flex">
-                  <p class="url-gerada-id">01</p>
-                  <p class="url-gerada-link">
-                    https://www.notion.so/Green-club-8d477635100044e4b3c5ca81c479fbdc
-                  </p>
+              <div class="container-vfor">
+                <div
+                  class="container-loop"
+                  v-for="(criar, index) in CriarLink.url"
+                  :key="index"
+                >
+                  <div class="container-lopp-itens">
+                    <div class="container-id-url">
+                      <!-- <p class="id-loop">01</p> -->
+                      <p class="id-loop">{{ index + 1 }}</p>
+                      <input
+                        class="placehouder"
+                        type="text"
+                        v-model="criar.urlTitulo"
+                        placeholder="Insira a URL original"
+                      />
+                    </div>
+                    <input
+                      class="placehouder"
+                      type="number"
+                      v-model="criar.cliques"
+                      placeholder="cliques"
+                    />
+                  </div>
                 </div>
-                <p class="url-gerada-cliques">250</p>
               </div>
-              <div class="adicionar-container">
-                <button class="botao">+ Adicionar mais URL</button>
-              </div>
-              <div class="default-container">
-                <h1 class="default-text">URL Default</h1>
-                <p class="default-descricao">
-                  Essa URL será associada ao redirecionamento apenas quando
-                  todas as outras chegarem ao limite de cliques. Ela será a uma
-                  url fixa sem limitação.
+              <button @click="AdicionarMaisLink" class="botao">
+                + Adicionar mais URL
+              </button>
+              <div class="container-url-default">
+                <h1 class="url-default-h1">URL Default</h1>
+                <p class="url-default-p">
+                  URL Default Essa URL será associada ao redirecionamento apenas
+                  quando todas as outras chegarem ao limite de cliques. Ela será
+                  a uma url fixa sem limitação. Insira a URL Default
                 </p>
-                <p class="default-inserir">Insira a URL Default</p>
+                <input
+                  class="default placehouder"
+                  v-model="CriarLink.urlOriginal"
+                  placeholder="Insira a URL Default"
+                />
               </div>
               <div class="flex-2">
-                <button class="botao-salvar">Salvar Link 💪</button>
+                <button @click="SalvarLinks" class="botao-salvar">
+                  Salvar Link 💪
+                </button>
               </div>
             </div>
           </div>
@@ -217,13 +226,243 @@ export default {
     return {
       abrirModal: false,
       SegundoModal: false,
+      numero: 0,
+      CriarLink: {
+        id: "01",
+        titulo: "",
+        urlOriginal: "",
+        url: [
+          {
+            id: "01",
+            urlTitulo: "",
+            cliques: 0,
+            totalcliques: "300",
+          },
+        ],
+        data: "01/01/01",
+        hora: "12:38",
+        cliques: 0,
+        totalcliques: "567",
+      },
+      LinksCriados: [
+        {
+          id: "01",
+          titulo: "Teste",
+          urlOriginal: "dsahkjhsajkdhska",
+          url: [
+            {
+              id: "01",
+              urlTitulo:
+                "https://www.notion.so/Green-club-8d477635100044e4b3c5ca81c479fbdc",
+              cliques: "67",
+              totalcliques: "567",
+            },
+          ],
+          data: "01/01/01",
+          hora: "12:38",
+          cliques: "67",
+          totalcliques: "567",
+        },
+        {
+          id: "02",
+          titulo: "Teste2",
+          urlOriginal: "fdsafsdfsd",
+          url: [
+            {
+              id: "01",
+              urlTitulo:
+                "https://www.notion.so/Green-club-8d477635100044e4b3c5ca81c479fbdc",
+              cliques: "50",
+              totalcliques: "300",
+            },
+            {
+              id: "02",
+              urlTitulo: "https://www.notion.so/Green-club-gfsdgfdgfdgdfgfdg",
+              cliques: "50",
+              totalcliques: "300",
+            },
+          ],
+          data: "01/01/01",
+          hora: "12:38",
+          cliques: "100",
+          totalcliques: "600",
+        },
+      ],
+      selectedItem: [],
+      inputEditUrlOriginal: false,
     };
   },
-  methods: {},
+  methods: {
+    saveEditUrlOriginal() {
+      this.inputEditUrlOriginal = false;
+    },
+    editUrlOriginal(data) {
+      console.log(data);
+      this.inputEditUrlOriginal = true;
+    },
+    copiarTexto() {
+      navigator.clipboard.writeText(
+        "http://localhost:8080/" + this.selectedItem.urlOriginal
+      );
+    },
+    selectItem(item) {
+      this.selectedItem = item;
+    },
+    AdicionarMaisLink() {
+      if (this.CriarLink.url.length <= 3) {
+        this.CriarLink.url.push({
+          id: "",
+          urlTitulo: "",
+          cliques: 0,
+          totalcliques: "300",
+        });
+      } else {
+        console.log("DESATIVAR BOTAO");
+      }
+    },
+    SalvarLinks() {
+      console.log(this.CriarLink);
+      var dados = this.LinksCriados;
+      dados.push(this.CriarLink);
+      this.LinksCriados = dados;
+
+      this.SegundoModal = false;
+
+      this.CriarLink = {
+        id: "01",
+        titulo: "",
+        urlOriginal: "",
+        url: [
+          {
+            id: "01",
+            urlTitulo: "",
+            cliques: 0,
+            totalcliques: "300",
+          },
+        ],
+        data: "01/01/01",
+        hora: "12:38",
+        cliques: 0,
+        totalcliques: "567",
+      };
+    },
+    pucharLinks() {
+      console.log(this.LinksCriados);
+      this.selectItem(this.LinksCriados[0]);
+    },
+  },
+  created() {
+    this.pucharLinks();
+    console.log("teste");
+  },
 };
 </script>
 
 <style>
+.container-lado-esquerdo {
+  padding: 20px;
+}
+.lado-esquerdo-titulo-clqiues {
+  font-size: 14px;
+  color: #2133d2;
+}
+.lado-esquerdo-titulo-url {
+  font-size: 13px;
+  line-height: 16px;
+  color: #2133d2;
+}
+.lado-esquerdo-titulo-date {
+  font-size: 12px;
+  line-height: 15px;
+  color: #2133d2;
+}
+
+.lado-esquerdo-titulo-p {
+  font-weight: 600;
+  font-size: 14px;
+  color: #2133d2;
+}
+.lado-esquerdo-url-cliques {
+  display: flex;
+  justify-content: space-between;
+}
+.lado-esquerdo-titulo-data {
+  display: flex;
+  gap: 30px;
+}
+.default {
+  margin-top: 20px;
+}
+.url-default-p {
+  margin-top: 10px;
+  color: #81858e;
+  font-size: 12px;
+}
+.container-url-default {
+  margin-top: 20px;
+}
+.url-default-h1 {
+  font-weight: 600;
+  font-size: 14px;
+  color: #2133d2;
+}
+.container-geracao-de-links-URL {
+  margin-top: 20px;
+}
+.placehouder {
+  border-bottom: 1px solid #2133d2;
+}
+.placehouder::placeholder {
+  color: #2133d2;
+}
+.container-loop {
+  margin-bottom: 30px;
+  margin-top: 30px;
+}
+.container-id-url {
+  display: flex;
+  gap: 20px;
+}
+
+.container-lopp-itens {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.id-loop {
+  font-weight: 600;
+  font-size: 13px;
+  color: #000000;
+}
+input {
+  border: none;
+}
+
+.geracao-de-links-titulo-p {
+  font-size: 12px;
+  color: #81858e;
+}
+.geracao-de-links-titulo-h2 {
+  font-weight: 600;
+  font-size: 14px;
+  color: #2133d2;
+}
+.geracao-de-links-titulo-input {
+  margin-top: 10px;
+  margin-bottom: 10px;
+}
+.container-geracao-de-links-titulo {
+  border-bottom: 1px solid #ededf0;
+}
+.geracao-de-links-titulo-h1 {
+  font-weight: 600;
+  font-size: 13px;
+  color: #333333;
+}
+.container-geracao-de-links {
+  padding: 20px 50px;
+}
 * {
   margin: 0px;
   padding: 0px;
