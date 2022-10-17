@@ -72,8 +72,10 @@
           <div class="lado-direito">
             <div class="container-link-escolhido">
               <div class="link-escolhido-container">
-                <h1 class="link-escolhido">{{ selectedItem.titulo ?? "" }}</h1>
-                <p class="link-escolhido-data">{{ selectedItem }}</p>
+                <h1 class="link-escolhido">{{ selectedItem.titulo }}</h1>
+                <p class="link-escolhido-data">
+                  Criado em:{{ selectedItem }} as:
+                </p>
               </div>
               <div class="link-escolhido-detalhes">
                 <p
@@ -81,7 +83,7 @@
                   id="copy"
                   v-if="!inputEditUrlOriginal"
                 >
-                  http://localhost:8080/{{ selectedItem.urlOriginal }}
+                  http://localhost:8080/{{ selectedItem.url_original }}
                 </p>
                 <input
                   v-else
@@ -113,7 +115,7 @@
                 </button>
               </div>
             </div>
-            <div v-for="(item, index) in selectedItem.url" :key="index">
+            <div v-for="(item, index) in selectedItem" :key="index">
               <div class="links-geradoss">
                 <div class="valor-container">
                   <div class="valor-flex-container">
@@ -373,13 +375,13 @@ export default {
               {
                 id: "01",
                 urlTitulo: "",
-                cliques: 0,
+                cliques: "15",
                 totalcliques: "300",
               },
             ],
             data: "01/01/01",
             hora: "12:38",
-            cliques: 0,
+            cliques: "15",
             totalcliques: "567",
           };
         })
