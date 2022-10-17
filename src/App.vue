@@ -46,6 +46,7 @@
             </div>
             <div>
               <div
+                id="id"
                 v-for="(criar, index) in LinksCriados"
                 :key="index"
                 @click="selectItem(criar)"
@@ -58,10 +59,10 @@
                   </div>
                   <div class="lado-esquerdo-url-cliques">
                     <p class="lado-esquerdo-titulo-url">
-                      {{ criar.urlOriginal }}
+                      {{ criar.url_original }}
                     </p>
                     <p class="lado-esquerdo-titulo-clqiues">
-                      👉 {{ criar.cliques }}/{{ criar.totalcliques }}
+                      👉 {{ criar.cliques }}/{{ criar.total_max_click }}
                     </p>
                   </div>
                 </div>
@@ -71,8 +72,8 @@
           <div class="lado-direito">
             <div class="container-link-escolhido">
               <div class="link-escolhido-container">
-                <h1 class="link-escolhido">{{ selectedItem.titulo }}</h1>
-                <p class="link-escolhido-data">{{ selectedItem.data }}</p>
+                <h1 class="link-escolhido">{{ selectedItem.titulo ?? "" }}</h1>
+                <p class="link-escolhido-data">{{ selectedItem }}</p>
               </div>
               <div class="link-escolhido-detalhes">
                 <p
@@ -117,11 +118,30 @@
                 <div class="valor-container">
                   <div class="valor-flex-container">
                     <h1 class="valor">{{ index + 1 }}</h1>
-                    <h1 class="link-gerado">
+                    <h1 class="link-gerado" v-if="!inputUrlSecundaria">
                       {{ item.urlTitulo }}
                     </h1>
+                    <input
+                      v-else
+                      class="geracao-de-links-titulo-input"
+                      type="text"
+                      v-model="item.urlTitulo"
+                      placeholder="Digite o Link"
+                    />
                   </div>
-                  <button class="botao">Editar</button>
+                  <button
+                    v-if="inputUrlSecundaria"
+                    class="botao"
+                    @click="saveEditUrlSecundaria(selectedItem)"
+                  >
+                    Salvar Editar
+                  </button>
+                  <button
+                    class="botao"
+                    @click="editUrlSecundaria(selectedItem)"
+                  >
+                    Editar
+                  </button>
                 </div>
                 <p class="data-gerada">02/250</p>
               </div>
@@ -217,7 +237,7 @@
 
 <script>
 import TexTo from "@/components/TexTo";
-
+import axios from "axios";
 export default {
   components: {
     TexTo,
@@ -290,9 +310,17 @@ export default {
       ],
       selectedItem: [],
       inputEditUrlOriginal: false,
+      inputUrlSecundaria: false,
     };
   },
   methods: {
+    saveEditUrlSecundaria() {
+      this.inputUrlSecundaria = false;
+    },
+    editUrlSecundaria(data) {
+      console.log(data);
+      this.inputUrlSecundaria = true;
+    },
     saveEditUrlOriginal() {
       this.inputEditUrlOriginal = false;
     },
@@ -309,7 +337,7 @@ export default {
       this.selectedItem = item;
     },
     AdicionarMaisLink() {
-      if (this.CriarLink.url.length <= 3) {
+      if (this.CriarLink.url.length <= 2) {
         this.CriarLink.url.push({
           id: "",
           urlTitulo: "",
@@ -325,30 +353,71 @@ export default {
       var dados = this.LinksCriados;
       dados.push(this.CriarLink);
       this.LinksCriados = dados;
-
-      this.SegundoModal = false;
-
-      this.CriarLink = {
-        id: "01",
-        titulo: "",
-        urlOriginal: "",
-        url: [
-          {
-            id: "01",
-            urlTitulo: "",
-            cliques: 0,
-            totalcliques: "300",
-          },
-        ],
-        data: "01/01/01",
-        hora: "12:38",
-        cliques: 0,
-        totalcliques: "567",
+      var data = {
+        titulo: this.CriarLink.titulo,
+        url_original: this.CriarLink.urlOriginal,
+        total_max_click: 200,
       };
+      var that = this;
+      axios
+        .post("http://127.0.0.1:8000/cadastrar-link", data)
+        .then(function (response) {
+          that.chamarSubLink(that.CriarLink.url, response.data);
+          console.log(response);
+          that.SegundoModal = false;
+          that.CriarLink = {
+            id: "01",
+            titulo: "",
+            urlOriginal: "",
+            url: [
+              {
+                id: "01",
+                urlTitulo: "",
+                cliques: 0,
+                totalcliques: "300",
+              },
+            ],
+            data: "01/01/01",
+            hora: "12:38",
+            cliques: 0,
+            totalcliques: "567",
+          };
+        })
+        .catch(function (response) {
+          console.log(response);
+        });
+    },
+    chamarSubLink(datadois, idBase) {
+      for (let i = 0; i < datadois.length; i++) {
+        const element = datadois[i];
+        var data2 = {
+          id_base: idBase,
+          url_titulo: element.urlTitulo,
+          cliques: parseFloat(element.cliques, 10),
+          total_cliques: element.totalcliques,
+        };
+        axios
+          .post("http://127.0.0.1:8000/cadastrarlinks", data2)
+          .then(function (response) {
+            console.log(response);
+          })
+          .catch(function (response) {
+            console.log(response);
+          });
+      }
     },
     pucharLinks() {
-      console.log(this.LinksCriados);
-      this.selectItem(this.LinksCriados[0]);
+      var that = this;
+      axios
+        .get("http://127.0.0.1:8000/mostrar-link")
+        .then(function (response) {
+          console.log(response);
+          that.LinksCriados = response.data;
+          that.selectItem(that.LinksCriados[0]);
+        })
+        .catch(function (response) {
+          console.log(response);
+        });
     },
   },
   created() {
@@ -360,6 +429,8 @@ export default {
 
 <style>
 .container-lado-esquerdo {
+  border-bottom: 1px solid #ededf0;
+
   padding: 20px;
 }
 .lado-esquerdo-titulo-clqiues {
